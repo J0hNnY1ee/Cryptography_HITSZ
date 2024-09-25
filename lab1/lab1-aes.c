@@ -212,7 +212,9 @@ int mergeArrayToInt(int array[4])
  */
 void subBytes(int array[4][4])
 {
-    // 请补充代码
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            array[i][j] = getNumFromSBox(array[i][j]);
 }
 
 /**
@@ -220,7 +222,9 @@ void subBytes(int array[4][4])
  */
 void deSubBytes(int array[4][4])
 {
-    // 请补充代码
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++)
+            array[i][j] = getNumFromS1Box(array[i][j]);
 }
 
 /**
@@ -228,7 +232,12 @@ void deSubBytes(int array[4][4])
  */
 void leftLoop4int(int array[4], int step)
 {
-    // 请补充代码
+    int tmp[4];
+    for (int i = 0; i < 4; i++)
+        tmp[i] = array[i];
+
+    for (int i = 0; i < 4; i++)
+        array[i] = tmp[(i - step + 4) % 4];
 }
 
 /**
@@ -236,7 +245,12 @@ void leftLoop4int(int array[4], int step)
  */
 void rightLoop4int(int array[4], int step)
 {
-    // 请补充代码
+    int tmp[4];
+    for (int i = 0; i < 4; i++)
+        tmp[i] = array[i];
+
+    for (int i = 0; i < 4; i++)
+        array[i] = tmp[(i + step + 4) % 4];
 }
 
 /**
@@ -244,7 +258,9 @@ void rightLoop4int(int array[4], int step)
  */
 void shiftRows(int array[4][4])
 {
-    // 请补充代码
+
+    for (int i = 0; i < 4; i++)
+        leftLoop4int(array[i], i);
 }
 
 /**
@@ -252,15 +268,24 @@ void shiftRows(int array[4][4])
  */
 void deShiftRows(int array[4][4])
 {
-    // 请补充代码
+    for (int i = 0; i < 4; i++)
+        rightLoop4int(array[i], i);
 }
 /**
  * 列混合
  */
 void mixColumns(int array[4][4])
 {
-
-    // 请补充代码
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                array[i][j] ^= GFMul(colM[i][k], array[k][j]);
+            }
+        }
+    }
 }
 
 /**
@@ -268,7 +293,16 @@ void mixColumns(int array[4][4])
  */
 void deMixColumns(int array[4][4])
 {
-    // 请补充代码
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                array[i][j] ^= GFMul(deColM[i][k], array[k][j]);
+            }
+        }
+    }
 }
 
 /**
@@ -277,7 +311,13 @@ void deMixColumns(int array[4][4])
 void addRoundKey(int array[4][4], int round)
 {
 
-    // 请补充代码
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 4; j++)
+        {
+            array[i][j] ^= w[round * 4 + i * 4 + j];
+        }
+    }
 }
 
 /**
@@ -287,6 +327,10 @@ int T(int num, int round)
 {
 
     // 请补充代码
+    int _8 = getNumFromSBox((num << 24) >> 24);
+    int _16 = getNumFromSBox((num << 16) >> 24);
+    int _24 = getNumFromSBox((num << 8) >> 24);
+    int _32 = getNumFromSBox(num >> 24);
 }
 
 /**
