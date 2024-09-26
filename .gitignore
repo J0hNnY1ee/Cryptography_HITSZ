@@ -3,3 +3,6 @@
 *.pdf
 *.docx
 *.txt
+*.png
+*.doc*
+*.zip*
