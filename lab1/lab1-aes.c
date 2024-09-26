@@ -252,7 +252,7 @@ void rightLoop4int(int array[4], int step)
         tmp[i] = array[i];
     for (int i = 0; i < 4; i++)
     {
-        array[i] = tmp[(i - step) % 4];
+        array[i] = tmp[(i - step + 4) % 4];
     }
 }
 
@@ -499,7 +499,7 @@ void deAes(char *c, int clen, char *key)
 {
 
     int cArray[4][4];
-    int keylen, k;
+    int keylen;
     keylen = strlen(key);
     if (clen == 0 || clen % 16 != 0)
     {
@@ -512,8 +512,22 @@ void deAes(char *c, int clen, char *key)
         printf("密钥字符长度错误！长度必须为16、24和32。当前长度为%d\n", keylen);
         exit(0);
     }
-
-    // 请补充代码
+    for (int k = 0; k < clen; k += 16)
+    {
+        convertToIntArray(c + k, cArray);
+        addRoundKey(cArray, 10);
+        deShiftRows(cArray);
+        deSubBytes(cArray);
+        for (int i = 9; i > 0; i--)
+        {
+            addRoundKey(cArray, i);
+            deMixColumns(cArray);
+            deShiftRows(cArray);
+            deSubBytes(cArray);
+        }
+        addRoundKey(cArray, 0);
+        convertArrayToStr(cArray, c + k);
+    }
 }
 /**
  *读取字符串
