@@ -75,7 +75,7 @@ def get_key():
     phin = (p - 1) * (q - 1)
     e = get_e(phin)
     d = mod_inverse(e, phin)
-    return (e, n), (d, n)
+    return (e, n), (d, n) ,(p,q)
 
 def encode(m, key):
     e, n = key
@@ -181,10 +181,19 @@ if __name__ == "__main__":
     m = read_plaintext_from_file(plaintext_file)
     
     int_m = string2int_group(str2int(m))  # 转为整数分组
-    pub_key, pri_key = get_key()  # 生成密钥对
-    print("公钥:", pub_key)
-    print("私钥:", pri_key)
+    pub_key, pri_key , (p,q) = get_key()  # 生成密钥对
     
+    # print("公钥:", pub_key)
+    # print("私钥:", pri_key)
+    e , n = pub_key
+    d, _  = pri_key
+    
+    print("p = ",p)
+    print("q = ",q)
+    print("n = ",n)
+    print("e = ",e)
+    print("d = ",d)
+    print("phin = ",  (p - 1) * (q - 1))
     # 加密
     c = encode(int_m, pub_key)
     save_ciphertext_to_file(c, ciphertext_file)  # 将密文保存为二进制文件
@@ -193,7 +202,7 @@ if __name__ == "__main__":
     # 解密
     c_from_file = read_ciphertext_from_file(ciphertext_file)  # 从文件读取密文
     decoded_int = decode(c_from_file, pri_key)  # 解密密文
-    print("解密后的整数:", decoded_int)
+    # print("解密后的整数:", decoded_int)
 
     # 将解密后的整数列表转换回字符串
     recovered_message = int_list_to_string(decoded_int)
