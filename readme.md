@@ -11,6 +11,6 @@
 完成进度：
 - [x] lab1  
 - [x] lab2
-- [ ] lab3
-- [ ] lab4
+- [x] lab3
+- [x] lab4
 - [ ] lab5
